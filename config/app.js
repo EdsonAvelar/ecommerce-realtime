@@ -155,7 +155,7 @@ module.exports = {
     |
     | The loader to be used for fetching and updating locales. Below is the
     | list of available options.
-    |
+    
     | file, database
     |
     */
