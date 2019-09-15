@@ -4,17 +4,23 @@
 const Model = use('Model')
 
 class Order extends Model {
+  static boot() {
+    super.boot()
+
+    this.addHook('afterFind', 'OrderHook.updateValues')
+    this.addHook('afterPaginate', 'OrderHook.updateCollectionValues')
+  }
 
   //Uma Order pode TEM um ou vários Items
   //Um item pertence apenas a uma ordem
-  //Relacionamento 1:N 
+  //Relacionamento 1:N
   items() {
     return this.hasMany('App/Models/OrderItem')
   }
 
   //Uma Order pode ter um ou mais cupons
   //Um cupon pode ser aplicado à uma ou várias ordens.
-   //Relacionamento N:N 
+  //Relacionamento N:N
   coupons() {
     return this.belongsToMany('App/Models/Coupon')
   }
