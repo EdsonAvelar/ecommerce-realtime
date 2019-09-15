@@ -23,6 +23,8 @@ class OrderItemSchema extends Schema {
         .references('id')
         .inTable('orders')
         .onDelete('cascade')
+
+      table.timestamps()
     })
   }
 
