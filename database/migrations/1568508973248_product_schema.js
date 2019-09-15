@@ -21,8 +21,8 @@ class ProductSchema extends Schema {
       table.timestamps()
     })
 
-    this.crate('image_product', table => {
-      table.increment()
+    this.create('image_product', table => {
+      table.increments()
       table.integer('image_id').unsigned()
       table.integer('product_id').unsigned()
       table
@@ -60,7 +60,7 @@ class ProductSchema extends Schema {
   down() {
     //Drop em ordem inversa!
     this.drop('category_product')
-    this.prod('image_product')
+    this.drop('image_product')
     this.drop('products')
   }
 }

@@ -4,11 +4,10 @@
 const Schema = use('Schema')
 
 class CouponProductSchema extends Schema {
-  up () {
-    this.create('coupon_product', (table) => {
+  up() {
+    this.create('coupon_product', table => {
       table.increments()
 
-      table.increments()
       table.integer('coupon_id').unsigned()
       table.integer('product_id').unsigned()
 
@@ -24,12 +23,11 @@ class CouponProductSchema extends Schema {
         .inTable('products')
         .onDelete('cascade')
 
-
       table.timestamps()
     })
   }
 
-  down () {
+  down() {
     this.drop('coupon_product')
   }
 }
