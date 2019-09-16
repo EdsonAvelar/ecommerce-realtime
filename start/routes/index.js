@@ -17,7 +17,7 @@
 const Route = use('Route')
 
 Route.get('/', () => {
-  return { greeting: 'Hello world in JSON' }
+  return { greeting: 'Hello Adonis 2' }
 }).as('home')
 
 /**
@@ -29,7 +29,6 @@ require('./auth')
  * Importa as Rodas de Admin
  */
 require('./admin')
-
 
 /**
  * Importa as Rodas de Client

@@ -2,7 +2,7 @@
 
 const Database = use('Database')
 const User = use('App/Models/User')
-const Role = use('App/Models/Role')
+const Role = use('Role')
 
 class AuthController {
   async register({ request, response }) {
@@ -20,7 +20,7 @@ class AuthController {
         transaction
       )
 
-      const role = await Role.findby('slug', 'client')
+      const role = await Role.findBy('slug', 'client')
 
       await user.roles().attach([role.id], null, transaction)
 
@@ -39,7 +39,11 @@ class AuthController {
   }
 
   async login({ request, response, auth }) {
-      
+    const { email, password } = request.all()
+
+    let data = await auth.withRefreshToken().attempt(email, password)
+
+    return response.send({ data })
   }
 
   async refresh({ request, response, auth }) {}
