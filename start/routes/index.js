@@ -18,4 +18,14 @@ const Route = use('Route')
 
 Route.get('/', () => {
   return { greeting: 'Hello world in JSON' }
-})
+}).as('home')
+
+/**
+ * Importa as Rotas de Authenticação
+ */
+require('./auth')
+
+/**
+ * Importa as Rodas de Admin
+ */
+require('./admin')
