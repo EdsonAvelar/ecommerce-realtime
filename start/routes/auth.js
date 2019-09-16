@@ -22,11 +22,13 @@ const Route = use('Route')
  * App/Controllers/Http/Auth
  */
 Route.group(() => {
+  //Authenticate Routes
   Route.post('register', 'AuthController.register').as('auth.register')
   Route.post('login', 'AuthController.login').as('auth.login')
   Route.post('refresh', 'AuthController.refresh').as('auth.refresh')
   Route.post('logout', 'AuthController.logout').as('auth.logout')
 
+  //Reset Password Routes
   Route.post('reset-password', 'AuthController.forgot').as('auth.forgot')
   Route.get('reset-password', 'AuthController.remember').as('auth.remember')
   Route.put('reset-password', 'AuthController.reset').as('auth.reset')

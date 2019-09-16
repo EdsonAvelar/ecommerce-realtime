@@ -5,6 +5,7 @@
   "description": "Adonisjs boilerplate for API server with pre-configured JWT",
   "main": "index.js",
   "scripts": {
+    "mon": "nodemon server.js",
     "start": "node server.js",
     "test": "node ace test",
     "dev": "adonis serve --dev --debug"
@@ -31,6 +32,7 @@
     "@adonisjs/websocket": "^1.0.12",
     "adonis-acl": "^1.1.1",
     "adonis-bumblebee": "^2.0.0",
+    "nodemon": "^1.19.2",
     "pg": "^7.12.1",
     "umi-request": "^1.2.5"
   },
