@@ -12,7 +12,8 @@
 */
 
 /** @type {import('@adonisjs/lucid/src/Factory')} */
-// const Factory = use('Factory')
+
+const Factory = use('Factory')
 
 //Factory é baseado no faker.js
 //Fake.js é baseado em https://chancejs.com/
