@@ -17,7 +17,7 @@ const Factory = use('Factory')
 
 //Factory é baseado no faker.js
 //Fake.js é baseado em https://chancejs.com/
-Factory.blueprint('App/Model/User', faker => {
+Factory.blueprint('App/Models/User', faker => {
   return {
     name: faker.first(),
     surname: faker.last(),
@@ -26,7 +26,7 @@ Factory.blueprint('App/Model/User', faker => {
   }
 })
 
-Factory.blueprint('App/Model/Category', faker => {
+Factory.blueprint('App/Models/Category', faker => {
   return {
     title: faker.country({ full: true }),
     description: faker.sentence()
@@ -34,7 +34,7 @@ Factory.blueprint('App/Model/Category', faker => {
 })
 
 //https://chancejs.com/thing/animal.html
-Factory.blueprint('App/Model/Product', faker => {
+Factory.blueprint('App/Models/Product', faker => {
   return {
     name: faker.animal({ type: 'zoo' }),
     description: faker.sentence(),
