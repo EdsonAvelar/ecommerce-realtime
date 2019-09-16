@@ -20,7 +20,8 @@ const providers = [
   '@adonisjs/validator/providers/ValidatorProvider',
   '@adonisjs/websocket/providers/WsProvider',
   'adonis-acl/providers/AclProvider',
-  'adonis-bumblebee/providers/BumblebeeProvider'
+  'adonis-bumblebee/providers/BumblebeeProvider',
+  '@adonisjs/antl/providers/AntlProvider'
 ]
 
 /*
@@ -65,4 +66,15 @@ const aliases = {
 */
 const commands = []
 
-module.exports = { providers, aceProviders, aliases, commands }
+const locales = {
+  loader: 'file',
+  locale: 'en'
+}
+
+module.exports = {
+  providers,
+  aceProviders,
+  aliases,
+  commands,
+  locales
+}
