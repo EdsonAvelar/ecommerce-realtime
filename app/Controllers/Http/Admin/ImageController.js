@@ -4,6 +4,7 @@
 /** @typedef {import('@adonisjs/framework/src/Response')} Response */
 /** @typedef {import('@adonisjs/framework/src/View')} View */
 
+const Image = use('App/Models/Image')
 /**
  * Resourceful controller for interacting with images
  */
@@ -16,77 +17,74 @@ class ImageController {
    * @param {Request} ctx.request
    * @param {Response} ctx.response
    * @param {View} ctx.view
+   * @param {View} ctx.pagination
    */
-  async index ({ request, response, view }) {
+  async index({ request, response, pagination }) {
+    const original_name = request.input('original_name')
+
+    //Não executa a query, apenas define o querybuild,
+    //por isso não tem o await
+    const query = Image.query()
+
+    if (original_name) {
+      //Postgres ILIKE for case insensitive.
+      if (Env.get('DB_CONNECTION') == 'pg')
+        query.where('original_name', 'ILIKE', `%${original_name}%`)
+      else {
+        query.where('original_name', 'LIKE', `%${original_name}%`)
+      }
+    }
+
+    //paginate(x,y)
+    //x é a primeiira página e o y é o limite do número de páginas.
+    //Agora sim executa a query...
+    const images = await query.paginate(pagination.page, pagination.limit)
+
+    return response.send({ images })
   }
 
-  /**
-   * Render a form to be used for creating a new image.
-   * GET images/create
-   *
-   * @param {object} ctx
-   * @param {Request} ctx.request
-   * @param {Response} ctx.response
-   * @param {View} ctx.view
-   */
-  async create ({ request, response, view }) {
+  async store({ request, response }) {
+    try {
+      const { path, size, original_name, extension } = request.all()
+      const image = await Image.create({ path, size, original_name, extension })
+
+      return response.status(201).send({ image })
+    } catch (error) {
+      return response.status(400).send({
+        message: 'Erro ao criar uma nova imagem'
+      })
+    }
   }
 
-  /**
-   * Create/save a new image.
-   * POST images
-   *
-   * @param {object} ctx
-   * @param {Request} ctx.request
-   * @param {Response} ctx.response
-   */
-  async store ({ request, response }) {
+  async show({ params: { id }, request, response, view }) {
+    const image = await Image.find(id)
+
+    return response.status(200).send({ image })
   }
 
-  /**
-   * Display a single image.
-   * GET images/:id
-   *
-   * @param {object} ctx
-   * @param {Request} ctx.request
-   * @param {Response} ctx.response
-   * @param {View} ctx.view
-   */
-  async show ({ params, request, response, view }) {
+  async update({ params: { id }, request, response }) {
+    try {
+      const image = await Image.findOrFail(id)
+
+      const { path, size, original_name, extension } = request.all()
+
+      image.merge({ path, size, original_name, extension })
+
+      await image.save()
+
+      return response.send({ image })
+    } catch (error) {
+      return response
+        .status(400)
+        .send({ message: 'Erro ao atualizar a imagem' })
+    }
   }
 
-  /**
-   * Render a form to update an existing image.
-   * GET images/:id/edit
-   *
-   * @param {object} ctx
-   * @param {Request} ctx.request
-   * @param {Response} ctx.response
-   * @param {View} ctx.view
-   */
-  async edit ({ params, request, response, view }) {
-  }
+  async destroy({ params: { id }, request, response }) {
+    const image = await Image.findOrFail(id)
+    await image.delete()
 
-  /**
-   * Update image details.
-   * PUT or PATCH images/:id
-   *
-   * @param {object} ctx
-   * @param {Request} ctx.request
-   * @param {Response} ctx.response
-   */
-  async update ({ params, request, response }) {
-  }
-
-  /**
-   * Delete a image with id.
-   * DELETE images/:id
-   *
-   * @param {object} ctx
-   * @param {Request} ctx.request
-   * @param {Response} ctx.response
-   */
-  async destroy ({ params, request, response }) {
+    return response.status(204).send({})
   }
 }
 
