@@ -16,10 +16,6 @@
 /** @type {typeof import('@adonisjs/framework/src/Route/Manager')} */
 const Route = use('Route')
 
-Route.get('/', () => {
-  return { greeting: 'Hello Adonis 2' }
-}).as('home')
-
 /**
  * Importa as Rotas de Authenticação
  */
