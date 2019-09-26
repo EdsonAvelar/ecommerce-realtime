@@ -7,6 +7,8 @@
 const Env = use('Env')
 
 const Category = use('App/Models/Category')
+
+const Transformer = use('App/Transformers/Admin/CategoryTransformer')
 /**
  * Resourceful controller for interacting with categories
  */
@@ -21,8 +23,9 @@ class CategoryController {
    * @param {View} ctx.view
    *
    * @param { Object } ctx.pagination
+   * @param {TransformerWith} ctx.transform
    */
-  async index({ request, response, view, pagination }) {
+  async index({ request, response, transform, pagination }) {
     const title = request.input('title')
 
     //Não executa a query, apenas define o querybuild,
@@ -41,7 +44,9 @@ class CategoryController {
     //paginate(x,y)
     //x é a primeiira página e o y é o limite do número de páginas.
     //Agora sim executa a query...
-    const categories = await query.paginate(pagination.page, pagination.limit)
+    let categories = await query.paginate(pagination.page, pagination.limit)
+
+    categories = await transform.paginate(categories, Transformer)
 
     return response.send({ categories })
   }

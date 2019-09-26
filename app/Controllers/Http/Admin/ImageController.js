@@ -52,7 +52,6 @@ class ImageController {
 
   async store({ request, response }) {
     try {
-      
       const fileJar = request.file('images', {
         types: ['image'],
         size: '2mb'
@@ -113,11 +112,8 @@ class ImageController {
   }
 
   async update({ params: { id }, request, response }) {
-
     const image = await Image.findOrFail(id)
     try {
-      
-
       const { original_name } = request.all()
 
       image.merge({ path, size, original_name })
@@ -136,27 +132,16 @@ class ImageController {
     const image = await Image.findOrFail(id)
 
     try {
-
-      await image.delete()
-
       let filePath = Helpers.publicPath(`uploads/${image.path}`)
 
-      await fs.unlink(filePath,err =>{
-        if (!err)
-          await image.delete()
+      await fs.unlink(filePath, async err => {
+        if (!err) await image.delete()
       })
 
       return response.status(204).send({})
     } catch (error) {
-      return response
-      .status(400)
-      .send({ message: 'Erro ao deletar a imagem' })
+      return response.status(400).send({ message: 'Erro ao deletar a imagem' })
     }
-
-
-    await image.delete()
-
-    return response.status(204).send({})
   }
 }
 
